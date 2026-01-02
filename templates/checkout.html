@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Secure Checkout • PeptideLab{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container checkout">
+    <div class="checkout__left reveal">
+      <div class="kicker">Secure Order Processing</div>
+      <h1 class="h1">Complete Your Order</h1>
+      <p class="muted">All orders are processed securely. Your information is protected and kept confidential. Research peptides will be shipped with temperature-controlled packaging.</p>
+
+      <div class="formCard">
+        <div class="panel__title">Contact Information</div>
+        <div class="formGrid">
+          <div class="field">
+            <label class="label">Email Address *</label>
+            <input class="input" type="email" placeholder="researcher@institution.edu" required />
+          </div>
+          <div class="field">
+            <label class="label">Phone Number *</label>
+            <input class="input" type="tel" placeholder="+971 50 123 4567" required />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="panel__title">Shipping Address</div>
+        <div class="formGrid">
+          <div class="field">
+            <label class="label">First Name *</label>
+            <input class="input" placeholder="First name" required />
+          </div>
+          <div class="field">
+            <label class="label">Last Name *</label>
+            <input class="input" placeholder="Last name" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Institution / Organization</label>
+          <input class="input" placeholder="Research institution or laboratory name" />
+        </div>
+
+        <div class="field">
+          <label class="label">Street Address *</label>
+          <input class="input" placeholder="Building number, street name, unit" required />
+        </div>
+
+        <div class="formGrid">
+          <div class="field">
+            <label class="label">City *</label>
+            <input class="input" placeholder="City" required />
+          </div>
+          <div class="field">
+            <label class="label">State / Province</label>
+            <input class="input" placeholder="State or province" />
+          </div>
+        </div>
+
+        <div class="formGrid">
+          <div class="field">
+            <label class="label">Postal Code *</label>
+            <input class="input" placeholder="Postal code" required />
+          </div>
+          <div class="field">
+            <label class="label">Country *</label>
+            <input class="input" placeholder="Country" required />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label class="label">Payment Method</label>
+          <div class="payRow">
+            <div class="payCard is-active">
+              <div class="payCard__title">💳 Credit Card</div>
+              <div class="muted micro">Visa / Mastercard / Amex</div>
+            </div>
+            <div class="payCard">
+              <div class="payCard__title">🏦 Bank Transfer</div>
+              <div class="muted micro">Wire transfer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Special Instructions (Optional)</label>
+          <textarea class="input" rows="3" placeholder="Any special handling or delivery instructions for your order"></textarea>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label style="display:flex; align-items:start; gap:10px; cursor:pointer;">
+            <input type="checkbox" required style="margin-top:4px;" />
+            <span class="micro muted">I confirm that I am 18+ years of age and that all products are intended strictly for laboratory research purposes. I understand these peptides are not for human consumption or medical use.</span>
+          </label>
+        </div>
+
+        <button class="btn btn--primary w-full" type="button" id="placeOrderBtn">
+          Place Research Order
+        </button>
+        <div class="micro muted" style="text-align:center; margin-top:10px;">
+          🔒 Secure 256-bit SSL encryption • By placing this order, you agree to our Terms of Service and Research Use Policy.
+        </div>
+      </div>
+    </div>
+
+    <aside class="checkout__right reveal" data-delay="120">
+      <div class="summaryCard">
+        <div class="panel__title">Order Summary</div>
+        <div class="summaryList" id="checkoutItems">
+          <div class="muted" style="text-align:center; padding:20px;">
+            No items in cart
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row">
+          <span class="muted">Subtotal</span>
+          <strong id="checkoutSubtotal">$0.00</strong>
+        </div>
+        <div class="row">
+          <span class="muted">Shipping & Handling</span>
+          <strong>$15.00</strong>
+        </div>
+        <div class="row">
+          <span class="muted">Temperature Control</span>
+          <strong>$5.00</strong>
+        </div>
+        <div class="divider"></div>
+        <div class="row" style="margin-top:10px;">
+          <span style="font-weight:700; color:var(--ink);">Order Total</span>
+          <strong id="checkoutTotal" style="font-size:1.3rem; color:var(--brand);">$0.00</strong>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div style="background:#f9fafb; padding:14px; border-radius:8px; border:1px solid var(--line);">
+          <div style="font-weight:700; margin-bottom:8px; font-size:.9rem;">📋 What's Included:</div>
+          <ul class="micro muted" style="margin:0; padding-left:20px; line-height:1.7;">
+            <li>Certificate of Analysis (COA)</li>
+            <li>HPLC purity data</li>
+            <li>Mass spectrometry results</li>
+            <li>Temperature-controlled packaging</li>
+            <li>Discreet shipping label</li>
+            <li>Storage instructions</li>
+          </ul>
+        </div>
+
+        <div class="divider"></div>
+        
+        <div class="micro muted" style="text-align:center;">
+          <div style="margin-bottom:6px;">🔒 Secure Payment Processing</div>
+          <div style="margin-bottom:6px;">📦 Discreet & Confidential Shipping</div>
+          <div>❄️ Temperature-Controlled Delivery</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+textarea.input {
+  font-family: var(--font);
+  resize: vertical;
+  min-height: 80px;
+}
+</style>
+{% endblock %}

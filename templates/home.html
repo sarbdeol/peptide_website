@@ -1,0 +1,243 @@
+{% extends "base.html" %} {% block title %}PeptideLab • Premium Research
+Peptides{% endblock %} {% block content %}
+
+<section class="hero hero--premium">
+  <div class="container hero__grid">
+    <div class="reveal">
+      <div class="kicker">Research-Grade Peptides</div>
+      <h1 class="hero__title">
+        High-purity peptides with
+        <span class="grad">complete documentation</span> for serious research.
+      </h1>
+      <p class="hero__desc">
+        Supplying qualified laboratories and research institutions with premium
+        peptides, comprehensive testing data, and Certificate of Analysis for
+        every batch.
+      </p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#products">View Catalog</a>
+        <button class="btn btn--ghost" type="button" data-open-modal="ageModal">
+          Research Guidelines
+        </button>
+      </div>
+
+      <div class="hero__trust">
+        <div class="trustMini">
+          <span class="trustMini__icon">⚗️</span>
+          <div>
+            <strong>≥98% Purity</strong>
+            <div class="muted micro">HPLC verified</div>
+          </div>
+        </div>
+        <div class="trustMini">
+          <span class="trustMini__icon">📋</span>
+          <div>
+            <strong>COA Provided</strong>
+            <div class="muted micro">Each batch tested</div>
+          </div>
+        </div>
+        <div class="trustMini">
+          <span class="trustMini__icon">🔬</span>
+          <div>
+            <strong>Lab Tested</strong>
+            <div class="muted micro">Third-party verified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--contrast" id="products">
+  <div class="container">
+    <div class="sectionHead reveal">
+      <div>
+        <div class="kicker">Research Catalog</div>
+        <h2 class="h2">Featured Peptides</h2>
+        <p class="muted">
+          High-purity research peptides for qualified laboratory use. All
+          products include Certificate of Analysis.
+        </p>
+      </div>
+      <div class="searchBox">
+        <input
+          class="input"
+          placeholder="Search by peptide name or sequence..."
+        />
+        <button class="btn btn--ghost" type="button">Search</button>
+      </div>
+    </div>
+
+    <div class="productsGrid">
+      {% for product in products %}
+      <a href="{% url 'product_detail' product.slug %}" class="productCard">
+        <div class="productCard__image">
+          {% with product.images.first as img %} {% if img %}
+          <img src="{{ img.image.url }}" alt="{{ product.name }}" />
+          {% endif %} {% endwith %}
+        </div>
+
+        <div class="productCard__body">
+          <div class="productCard__kicker">Research Peptide</div>
+          <h3 class="productCard__title">{{ product.name }}</h3>
+
+          {% if product.short_description %}
+          <p class="productCard__desc">
+            {{ product.short_description|truncatechars:80 }}
+          </p>
+          {% endif %}
+
+          <div class="productCard__footer">
+            <span class="productCard__price"> ${{ product.price_usd }} </span>
+          </div>
+          <button
+              class="btn btn--primary w-full"
+              data-add-to-cart
+              data-sku="{{ p.slug }}"
+              data-name="{{ p.name }}"
+              data-price="{{ p.price_usd }}"
+            >
+              Add to Cart
+            </button>
+          </div>
+          
+        </div>
+      </a>
+      {% empty %}
+      <p>No products available.</p>
+      {% endfor %}
+    </div>
+    <div class="viewAllWrap">
+  <a href="/products/" class="btn btn--secondary">
+    View All Products
+  </a>
+</div>
+  </div>
+</section>
+
+<section class="section section--soft" id="quality">
+  <div class="container">
+    <div class="split">
+      <div class="reveal">
+        <div class="kicker">Quality Assurance</div>
+        <h2 class="h2">Rigorous testing and documentation</h2>
+        <p class="muted">
+          Every peptide undergoes comprehensive analytical testing including
+          HPLC purity analysis, mass spectrometry verification, and endotoxin
+          screening. Complete documentation provided with each order.
+        </p>
+        <div class="bulletGrid">
+          <div class="bullet">
+            <span>📊</span>
+            <div>
+              <strong>HPLC Analysis</strong>
+              <div class="muted micro">Purity ≥98% confirmed</div>
+            </div>
+          </div>
+          <div class="bullet">
+            <span>🔬</span>
+            <div>
+              <strong>Mass Spec Verified</strong>
+              <div class="muted micro">Molecular weight confirmed</div>
+            </div>
+          </div>
+          <div class="bullet">
+            <span>📋</span>
+            <div>
+              <strong>COA Included</strong>
+              <div class="muted micro">Batch-specific testing data</div>
+            </div>
+          </div>
+          <div class="bullet">
+            <span>🧊</span>
+            <div>
+              <strong>Proper Storage</strong>
+              <div class="muted micro">Temperature controlled</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal" data-delay="120">
+        <div class="panel__title">Request Certificate of Analysis</div>
+        <p class="muted">
+          Enter your order or batch number to retrieve the complete COA
+          documentation.
+        </p>
+        <div class="row gap">
+          <input class="input" placeholder="Order ID or Batch Number" />
+          <button class="btn btn--primary" type="button">Request</button>
+        </div>
+        <div class="micro muted">
+          For laboratory research use only. Not for human consumption.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--light" id="faq">
+  <div class="container">
+    <div class="sectionHead reveal">
+      <div>
+        <div class="kicker">Frequently Asked Questions</div>
+        <h2 class="h2">Research Guidelines & Information</h2>
+      </div>
+    </div>
+
+    <div class="faq">
+      <details class="faq__item reveal">
+        <summary>What purity level can I expect?</summary>
+        <div class="muted">
+          All research peptides are supplied at ≥98% purity as confirmed by HPLC
+          analysis. Each batch includes a Certificate of Analysis with detailed
+          testing results.
+        </div>
+      </details>
+      <details class="faq__item reveal" data-delay="80">
+        <summary>Is a Certificate of Analysis provided?</summary>
+        <div class="muted">
+          Yes. Every peptide order includes a batch-specific COA with HPLC
+          chromatogram, mass spectrometry data, and purity analysis. Additional
+          testing documentation available upon request.
+        </div>
+      </details>
+      <details class="faq__item reveal" data-delay="160">
+        <summary>What are the storage requirements?</summary>
+        <div class="muted">
+          Lyophilized peptides should be stored at -20°C or below. Once
+          reconstituted, store at -20°C for short-term use or -80°C for extended
+          storage. Detailed storage instructions included with each product.
+        </div>
+      </details>
+      <details class="faq__item reveal" data-delay="240">
+        <summary>Do you provide dosing or protocol guidance?</summary>
+        <div class="muted">
+          No. All peptides are sold strictly for in-vitro research purposes. We
+          do not provide dosing recommendations, protocols for human use, or any
+          medical advice. Researchers must follow appropriate laboratory safety
+          procedures.
+        </div>
+      </details>
+      <details class="faq__item reveal" data-delay="320">
+        <summary>What is your shipping policy?</summary>
+        <div class="muted">
+          Orders are shipped with temperature-controlled packaging to maintain
+          peptide stability. Tracking information provided for all orders.
+          Shipping times vary by destination. All packages are discreetly
+          labeled.
+        </div>
+      </details>
+      <details class="faq__item reveal" data-delay="400">
+        <summary>Who can order research peptides?</summary>
+        <div class="muted">
+          Research peptides are available to qualified laboratories, research
+          institutions, and licensed researchers. All customers must be 18+
+          years of age and acknowledge that products are for research use only.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+{% endblock %}

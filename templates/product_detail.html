@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}{{ product.seo_title|default:product.name }} • PeptideLab{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+
+    <!-- ================= BREADCRUMBS ================= -->
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/products/">Products</a>
+      <span>/</span>
+      <span>{{ product.name }}</span>
+    </nav>
+
+    <!-- ================= TOP GRID ================= -->
+    <div class="productTop">
+
+      <!-- MEDIA -->
+      <div class="product__media reveal">
+        {% with product.images.all as imgs %}
+          {% if imgs|length > 0 %}
+            <div class="product__image">
+              <img
+                id="mainProductImage"
+                src="{{ imgs.0.image.url }}"
+                alt="{{ product.name }}"
+              />
+            </div>
+
+            {% if imgs|length > 1 %}
+              <div class="product__thumbs">
+                {% for img in imgs %}
+                  <img
+                    src="{{ img.image.url }}"
+                    data-full="{{ img.image.url }}"
+                    alt="{{ product.name }}"
+                  />
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <!-- INFO -->
+      <div class="product__infoCard reveal" data-delay="120">
+        <div class="product__info">
+
+          <div class="kicker">Research Peptide</div>
+
+          <h1 class="h1">{{ product.name }}</h1>
+
+          {% if product.short_description %}
+            <p class="muted">{{ product.short_description }}</p>
+          {% endif %}
+
+          <div class="product__badges">
+            <span class="pill">COA Included</span>
+            <span class="pill">HPLC Tested</span>
+          </div>
+
+          <div class="priceRow">
+            <div class="price">${{ product.price_usd }}</div>
+            <div class="muted micro">
+              In stock • Temperature-controlled shipping
+            </div>
+          </div>
+
+          <!-- BUY CONTROLS -->
+          <div class="controls">
+            <label class="label">Units</label>
+
+            <div class="qty">
+              <button class="qty__btn" data-qty-minus>−</button>
+              <input class="qty__input" value="1" />
+              <button class="qty__btn" data-qty-plus>+</button>
+            </div>
+
+            <button
+              class="btn btn--primary w-full"
+              data-add-to-cart
+              data-sku="{{ product.slug }}"
+              data-name="{{ product.name }}"
+              data-price="{{ product.price_usd }}"
+            >
+              Add to Research Order
+            </button>
+
+            <div class="micro muted">
+              For laboratory research use only. Not for human or veterinary use.
+            </div>
+          </div>
+
+          <!-- TRUST STRIP -->
+          <div class="trustStrip">
+            <div class="trustItem">✔ COA with every order</div>
+            <div class="trustItem">✔ ≥99% purity verified</div>
+            <div class="trustItem">✔ Temperature-controlled shipping</div>
+            <div class="trustItem">✔ Secure research checkout</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <!-- ================= END TOP GRID ================= -->
+
+    <!-- ================= PRODUCT DETAILS / TABS ================= -->
+    <div class="productTabs">
+
+      <div class="tabs">
+        <button class="tab is-active" data-tab="desc">Description</button>
+        <button class="tab" data-tab="coa">COA / HPLC / MS</button>
+        <button class="tab" data-tab="third">3rd Party Testing</button>
+        <button class="tab" data-tab="storage">Storage</button>
+      </div>
+
+      <div class="tabPane is-active" data-tab-pane="desc">
+        {{ product.description|linebreaks }}
+      </div>
+
+      <div class="tabPane" data-tab-pane="coa">
+        {{ product.coa_hplc_ms|linebreaks }}
+      </div>
+
+      <div class="tabPane" data-tab-pane="third">
+        {{ product.third_party_testing|linebreaks }}
+      </div>
+
+      <div class="tabPane" data-tab-pane="storage">
+        {{ product.storage|linebreaks }}
+      </div>
+
+    </div>
+
+ 
+    <section class="faqSection">
+      <h2 class="h3">Frequently Asked Questions</h2>
+
+      <div class="faqItem">
+        <h4>Is this product approved for human use?</h4>
+        <p>
+          No. All products are intended strictly for laboratory research use only
+          and are not approved for human or veterinary consumption.
+        </p>
+      </div>
+
+      <div class="faqItem">
+        <h4>Do you provide certificates of analysis?</h4>
+        <p>
+          Yes. Each product includes a COA verifying purity, identity, and
+          analytical results.
+        </p>
+      </div>
+
+      <div class="faqItem">
+        <h4>How are products shipped?</h4>
+        <p>
+          Orders are shipped using temperature-controlled packaging where required
+          to ensure product stability.
+        </p>
+      </div>
+    </section>
+
+  </div>
+</section>
+{% endblock %}

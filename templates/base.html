@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}PeptideLab • Research Peptides{% endblock %}</title>
+    <meta
+      name="description"
+      content="{% block meta_description %}Premium research peptides with Certificate of Analysis and secure ordering.{% endblock %}"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="icon" href="{% static 'images/logo.svg' %}" sizes="any">
+  {% comment %} <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/favicon-16x16.png' %}"> {% endcomment %}
+
+    {% block extra_head %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="topbar">
+      <div class="container topbar__inner">
+        <span>🔬 For Research Purposes Only</span>
+        <span class="dot">•</span>
+        <span>Certificate of Analysis Provided</span>
+        <span class="dot">•</span>
+        <span>Secure & Confidential</span>
+      </div>
+    </div>
+
+    <header class="header" id="siteHeader">
+      <div class="container header__inner">
+        <a class="brand" href="{% url 'home' %}">
+          <img
+            src="{% static 'images/logo.webp' %}"
+            alt="PeptideLab logo"
+            class="brand__logo"
+          />
+          {% comment %} <div class="brand__text">
+            <span class="brand__name">PeptideLab</span>
+            <span class="brand__tag">Research Peptides</span>
+          </div> {% endcomment %}
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="{% url 'home' %}#products">Research Catalog</a>
+          <a href="{% url 'home' %}#quality">Quality Assurance</a>
+          <a href="{% url 'home' %}#faq">Information</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="actions">
+          <button
+            class="btn btn--ghost"
+            type="button"
+            data-open-modal="ageModal"
+          >
+            Important Notice
+          </button>
+          <button
+            class="btn btn--primary"
+            type="button"
+            id="cartBtn"
+            aria-haspopup="dialog"
+            aria-controls="cartDrawer"
+          >
+            Order Cart <span class="badge" id="cartCount">0</span>
+          </button>
+
+          <button
+            class="burger"
+            id="burgerBtn"
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobileNav" id="mobileNav" hidden>
+        <div class="container mobileNav__inner">
+          <a href="{% url 'home' %}#products">Research Catalog</a>
+          <a href="{% url 'home' %}#quality">Quality Assurance</a>
+          <a href="{% url 'home' %}#faq">Information</a>
+          <a href="#contact">Contact</a>
+          <button
+            class="btn btn--primary w-full"
+            type="button"
+            id="mobileCartBtn"
+          >
+            View Order Cart <span class="badge" id="cartCountMobile">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="footer" id="contact">
+      <div class="container footer__grid">
+        <div>
+          <div class="footer__brand">
+            <span class="footer__logo"><a class="brand" href="{% url 'home' %}">
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="PeptideLab logo"
+            class="brand__logo"
+          />
+          {% comment %} <div class="brand__text">
+            <span class="brand__name">PeptideLab</span>
+            <span class="brand__tag">Research Peptides</span>
+          </div> {% endcomment %}
+        </a></span>
+            
+          </div>
+          <p class="muted">
+            Providing high-purity research peptides to qualified laboratories
+            and institutions. Each product includes comprehensive documentation
+            and Certificate of Analysis.
+          </p>
+          <div class="footer__row">
+            <span class="pill">🔒 Secure Ordering</span>
+            <span class="pill">📋 COA Included</span>
+            <span class="pill">📦 Discreet Shipping</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer__title">Customer Service</div>
+          <a class="footer__link" href="#">Shipping Information</a>
+          <a class="footer__link" href="#">Return Policy</a>
+          <a class="footer__link" href="#">Contact Us</a>
+          <a class="footer__link" href="#">Track Order</a>
+        </div>
+
+        <div>
+          <div class="footer__title">Information</div>
+          <a class="footer__link" href="#">About Our Lab</a>
+          <a class="footer__link" href="#">Terms of Service</a>
+          <a class="footer__link" href="#">Privacy Policy</a>
+          <a class="footer__link" href="#">Research Guidelines</a>
+        </div>
+      </div>
+
+      <div class="container footer__bottom">
+        <span class="muted"
+          >© {{ now|date:"Y" }} PeptideLab. All rights reserved.</span
+        >
+        <span class="muted">For research use only.</span>
+      </div>
+    </footer>
+
+    <div
+      class="drawer"
+      id="cartDrawer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Cart"
+      hidden
+    >
+      <div class="drawer__backdrop" data-close-drawer></div>
+      <div class="drawer__panel">
+        <div class="drawer__head">
+          <div>
+            <div class="drawer__title">Your Research Order</div>
+            <div class="muted" id="cartSub">0 items</div>
+          </div>
+          <button
+            class="iconBtn"
+            type="button"
+            aria-label="Close cart"
+            data-close-drawer
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="drawer__body" id="cartItems">
+          <div class="emptyState" id="cartEmpty">
+            <div class="emptyState__icon">🧬</div>
+            <div class="emptyState__title">No items in cart</div>
+            <div class="muted">
+              Browse our research peptide catalog to begin.
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer__foot">
+          <div class="row">
+            <span class="muted">Order Subtotal</span>
+            <strong id="cartSubtotal">$0.00</strong>
+          </div>
+          <a class="btn btn--primary w-full" href="{% url 'checkout' %}"
+            >Proceed to Checkout</a
+          >
+          <div class="micro muted">
+            For laboratory research only. Must be 18+ years of age.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal"
+      id="ageModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Disclaimer"
+      hidden
+    >
+      <div class="modal__backdrop" data-close-modal></div>
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div class="modal__title">Research Use Declaration</div>
+          <button
+            class="iconBtn"
+            type="button"
+            aria-label="Close"
+            data-close-modal
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal__body">
+          <p class="muted">
+            All peptide products offered are intended strictly for in-vitro
+            research and laboratory applications. These compounds are not for
+            human consumption, medical use, or veterinary applications. We do
+            not provide medical advice, dosing recommendations, or therapeutic
+            guidance.
+          </p>
+          <ul class="checklist">
+            <li>Must be 18 years of age or older</li>
+            <li>For qualified research use only</li>
+            <li>Not for human or animal consumption</li>
+            <li>Certificate of Analysis provided with each order</li>
+          </ul>
+        </div>
+        <div class="modal__foot">
+          <button
+            class="btn btn--primary w-full"
+            type="button"
+            data-close-modal
+          >
+            I Understand & Agree
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    <script>
+      document.addEventListener("click", function (e) {
+        const thumb = e.target.closest(".product__thumbs img");
+        if (!thumb) return;
+
+        const main = document.getElementById("mainProductImage");
+        if (main) {
+          main.src = thumb.dataset.full;
+        }
+      });
+    </script>
+  </body>
+</html>

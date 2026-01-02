@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}All Research Peptides • PeptideLab{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- ================= BREADCRUMBS ================= -->
+    <nav class="breadcrumbs">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/products/">Products</a>
+    
+    </nav>
+    <!-- Page Header -->
+    <div class="pageHeader">
+      <h1 class="h1">Research Peptides</h1>
+      <p class="muted">
+        High-purity research peptides for laboratory use only.
+      </p>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="productsGrid">
+      {% for product in products %}
+        <a href="{% url 'product_detail' product.slug %}" class="productCard">
+
+          <div class="productCard__image">
+            {% with product.images.first as img %}
+              {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ product.name }}">
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <div class="productCard__body">
+            <div class="productCard__kicker">Research Peptide</div>
+            <h3 class="productCard__title">{{ product.name }}</h3>
+
+            {% if product.short_description %}
+              <p class="productCard__desc">
+                {{ product.short_description|truncatechars:80 }}
+              </p>
+            {% endif %}
+
+            <div class="productCard__footer">
+              <span class="productCard__price">
+                ${{ product.price_usd }}
+              </span>
+              <span class="productCard__cta">
+                View →
+              </span>
+            </div>
+          </div>
+
+        </a>
+      {% empty %}
+        <p>No products available.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}
