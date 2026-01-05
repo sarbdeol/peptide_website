@@ -173,16 +173,21 @@
   };
 
   // Add-to-cart buttons
-  $$("[data-add-to-cart]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const sku = btn.getAttribute("data-sku") || "";
-      const name = btn.getAttribute("data-name") || "Item";
-      const price = Number(btn.getAttribute("data-price") || 0);
-      addToCart({ sku, name, price, qty: 1 });
-      // open drawer for feedback
-      openDrawer();
-    });
+$$("[data-add-to-cart]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const sku = btn.getAttribute("data-sku") || "";
+    const name = btn.getAttribute("data-name") || "Item";
+    const price = Number(btn.getAttribute("data-price") || 0);
+
+    let qty = 1;
+    const qtyInput = document.querySelector(".qty__input");
+    if (qtyInput) qty = Number(qtyInput.value || 1);
+
+    addToCart({ sku, name, price, qty });
+    openDrawer();
   });
+});
+
 
   // Product quantity controls
   const qtyInput = $(".qty__input");
@@ -250,12 +255,70 @@
   };
   renderCheckout();
 
-  const placeOrderBtn = $("#placeOrderBtn");
-  if (placeOrderBtn) {
-    placeOrderBtn.addEventListener("click", () => {
-      alert("Demo: order placed UI only. Wire to Django Payment + Order API next.");
-    });
-  }
+  // -----------------------
+// Crypto Checkout (NOWPayments)
+// -----------------------
+const placeOrderBtn = $("#placeOrderBtn");
+
+if (placeOrderBtn) {
+  placeOrderBtn.addEventListener("click", async () => {
+
+    const items = getCart();
+
+    if (!items.length) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    // Collect customer + address from checkout form
+    const payload = {
+      items: items.map(it => ({
+        sku: it.sku,
+        name: it.name,
+        price: Number(it.price),
+        qty: Number(it.qty)
+      })),
+      customer: {
+        email: document.querySelector('input[type="email"]')?.value || "",
+        phone: document.querySelector('input[type="tel"]')?.value || ""
+      },
+      address: {
+        first_name: document.querySelector('input[placeholder="First name"]')?.value || "",
+        last_name: document.querySelector('input[placeholder="Last name"]')?.value || "",
+        street: document.querySelector('input[placeholder*="street"]')?.value || "",
+        city: document.querySelector('input[placeholder="City"]')?.value || "",
+        country: document.querySelector('input[placeholder="Country"]')?.value || "",
+        postal_code: document.querySelector('input[placeholder="Postal"]')?.value || ""
+      }
+    };
+
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.textContent = "Redirecting to crypto checkout…";
+
+    try {
+      const res = await fetch("/api/payments/crypto/create/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data.invoice_url) {
+        // Redirect to NOWPayments hosted checkout
+        window.location.href = data.invoice_url;
+      } else {
+        throw new Error("Invoice URL missing");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("Unable to start crypto payment. Please try again.");
+      placeOrderBtn.disabled = false;
+      placeOrderBtn.textContent = "Place Research Order";
+    }
+  });
+}
 
   // Reveal-on-scroll animations
   const revealEls = $$(".reveal");

@@ -60,59 +60,72 @@ Peptides{% endblock %} {% block content %}
           products include Certificate of Analysis.
         </p>
       </div>
-      <div class="searchBox">
+      <form class="searchBox" method="get" action="/products/">
         <input
           class="input"
+          name="q"
+          value="{{ request.GET.q }}"
           placeholder="Search by peptide name or sequence..."
         />
-        <button class="btn btn--ghost" type="button">Search</button>
-      </div>
+        <button class="btn btn--ghost" type="submit">Search</button>
+      </form>
     </div>
 
     <div class="productsGrid">
-      {% for product in products %}
-      <a href="{% url 'product_detail' product.slug %}" class="productCard">
-        <div class="productCard__image">
-          {% with product.images.first as img %} {% if img %}
-          <img src="{{ img.image.url }}" alt="{{ product.name }}" />
-          {% endif %} {% endwith %}
-        </div>
+      {% for product in products|slice:":8" %}
+      <div class="productCard">
+        <!-- CLICKABLE CONTENT -->
+        <a
+          href="{% url 'product_detail' product.slug %}"
+          class="productCard__link"
+        >
+          <div class="productCard__image">
+            {% with product.images.all as imgs %} {% if imgs|length > 0 %}
+            <img
+              class="img-primary"
+              src="{{ imgs.0.image.url }}"
+              alt="{{ product.name }}"
+            />
 
-        <div class="productCard__body">
-          <div class="productCard__kicker">Research Peptide</div>
-          <h3 class="productCard__title">{{ product.name }}</h3>
-
-          {% if product.short_description %}
-          <p class="productCard__desc">
-            {{ product.short_description|truncatechars:80 }}
-          </p>
-          {% endif %}
-
-          <div class="productCard__footer">
-            <span class="productCard__price"> ${{ product.price_usd }} </span>
+            {% if imgs|length > 1 %}
+            <img
+              class="img-hover"
+              src="{{ imgs.1.image.url }}"
+              alt="{{ product.name }}"
+            />
+            {% endif %} {% endif %} {% endwith %}
           </div>
+
+          <div class="productCard__body">
+            <div class="productCard__kicker">Research Peptide</div>
+
+            <h3 class="productCard__title">{{ product.name }}</h3>
+
+            <div class="productCard__footer">
+              <span class="productCard__price">${{ product.price_usd }}</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- CHECKOUT AREA (MUST EXIST FOR ALL) -->
+        <div class="productCard__checkout">
           <button
-              class="btn btn--primary w-full"
-              data-add-to-cart
-              data-sku="{{ p.slug }}"
-              data-name="{{ p.name }}"
-              data-price="{{ p.price_usd }}"
-            >
-              Add to Cart
-            </button>
-          </div>
-          
+            class="btn btn--primary w-full productCard__btn"
+            data-add-to-cart
+            data-sku="{{ product.slug }}"
+            data-name="{{ product.name }}"
+            data-price="{{ product.price_usd }}"
+          >
+            Add to Cart
+          </button>
         </div>
-      </a>
-      {% empty %}
-      <p>No products available.</p>
+      </div>
       {% endfor %}
     </div>
+
     <div class="viewAllWrap">
-  <a href="/products/" class="btn btn--secondary">
-    View All Products
-  </a>
-</div>
+      <a href="/products/" class="btn btn--secondary"> View All Products </a>
+    </div>
   </div>
 </section>
 

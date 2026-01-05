@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Payment Successful • PeptideLab{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:640px;text-align:center">
+
+    <div style="font-size:64px;margin-bottom:12px">✅</div>
+
+    <h1 class="h2">Payment Successful</h1>
+
+    <p class="muted" style="margin:16px 0">
+      Your crypto payment has been received successfully.
+      Your research order is now being processed.
+    </p>
+
+    <div class="panel" style="margin:24px 0">
+      <p class="micro muted">
+        • Order confirmation will be sent by email<br>
+        • COA documents will be provided with shipment<br>
+        • For research use only
+      </p>
+    </div>
+
+    <a href="/products/" class="btn btn--primary">
+      Continue Browsing
+    </a>
+
+  </div>
+</section>
+
+<script>
+  // 🔥 Clear cart after successful payment
+  localStorage.removeItem("labtrust_cart_v1");
+</script>
+{% endblock %}

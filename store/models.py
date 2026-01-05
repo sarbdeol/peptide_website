@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-
+from django.utils.timezone import now
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -60,3 +60,21 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"{self.product.name} image"
+
+class TempCart(models.Model):
+    created_at = models.DateTimeField(default=now)
+    data = models.JSONField()
+
+    def __str__(self):
+        return f"TempCart #{self.id}"
+    
+class Order(models.Model):
+    created_at = models.DateTimeField(default=now)
+    items = models.JSONField()
+    amount_total = models.DecimalField(max_digits=10, decimal_places=2)
+    paid = models.BooleanField(default=False)
+    status = models.CharField(max_length=30, default="Pending")
+    payment_method = models.CharField(max_length=30, default="crypto")
+
+    def __str__(self):
+        return f"Order #{self.id}"

@@ -25,11 +25,20 @@
         <a href="{% url 'product_detail' product.slug %}" class="productCard">
 
           <div class="productCard__image">
-            {% with product.images.first as img %}
-              {% if img %}
-                <img src="{{ img.image.url }}" alt="{{ product.name }}">
-              {% endif %}
-            {% endwith %}
+            {% with product.images.all as imgs %} {% if imgs|length > 0 %}
+            <img
+              class="img-primary"
+              src="{{ imgs.0.image.url }}"
+              alt="{{ product.name }}"
+            />
+
+            {% if imgs|length > 1 %}
+            <img
+              class="img-hover"
+              src="{{ imgs.1.image.url }}"
+              alt="{{ product.name }}"
+            />
+            {% endif %} {% endif %} {% endwith %}
           </div>
 
           <div class="productCard__body">

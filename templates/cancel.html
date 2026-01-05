@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Payment Cancelled • PeptideLab{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:640px;text-align:center">
+
+    <div style="font-size:64px;margin-bottom:12px">⚠️</div>
+
+    <h1 class="h2">Payment Cancelled</h1>
+
+    <p class="muted" style="margin:16px 0">
+      Your crypto payment was not completed.
+      No charges were made.
+    </p>
+
+    <div class="panel" style="margin:24px 0">
+      <p class="micro muted">
+        You may retry the payment or choose a different method.
+      </p>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center">
+      <a href="/checkout/" class="btn btn--primary">
+        Retry Payment
+      </a>
+
+      <a href="/products/" class="btn btn--ghost">
+        Back to Products
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

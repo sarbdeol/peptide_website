@@ -72,17 +72,20 @@
 
         <div class="field">
           <label class="label">Payment Method</label>
+
           <div class="payRow">
-            <div class="payCard is-active">
-              <div class="payCard__title">💳 Credit Card</div>
-              <div class="muted micro">Visa / Mastercard / Amex</div>
+            <div class="payCard is-active" data-method="crypto">
+              <div class="payCard__title">₿ Cryptocurrency</div>
+              <div class="muted micro">BTC / ETH / USDT (NOWPayments)</div>
             </div>
-            <div class="payCard">
+
+            <div class="payCard" data-method="bank">
               <div class="payCard__title">🏦 Bank Transfer</div>
-              <div class="muted micro">Wire transfer</div>
+              <div class="muted micro">Manual wire transfer</div>
             </div>
           </div>
         </div>
+
 
         <div class="field">
           <label class="label">Special Instructions (Optional)</label>
@@ -169,4 +172,16 @@ textarea.input {
   min-height: 80px;
 }
 </style>
+<script>
+let selectedPayment = "crypto";
+
+document.querySelectorAll(".payCard").forEach(card => {
+  card.onclick = () => {
+    document.querySelectorAll(".payCard").forEach(c => c.classList.remove("is-active"));
+    card.classList.add("is-active");
+    selectedPayment = card.dataset.method;
+  };
+});
+</script>
+
 {% endblock %}
