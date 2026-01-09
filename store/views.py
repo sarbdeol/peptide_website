@@ -150,7 +150,7 @@ def create_crypto_invoice(request):
         "is_fixed_rate": True,
         "order_id": str(temp.id),
         "order_description": f"PeptideLab Order #{temp.id}",
-        "success_url": "https://retacuretide.com//checkout/success",
+        "success_url": "https://retacuretide.com/checkout/success",
         "cancel_url": "https://retacuretide.com/checkout/cancel",
         "ipn_callback_url": "https://retacuretide.com/api/payments/crypto/webhook/",
     }
