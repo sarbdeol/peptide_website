@@ -9,6 +9,7 @@ from rest_framework import permissions
 from django.conf import settings
 from .models import Product
 from .models import TempCart, Order
+from django.views.decorators.csrf import csrf_exempt
 NOWPAYMENTS_API_KEY = settings.NOWPAYMENTS_API_KEY
 IPN_SECRET = settings.NOWPAYMENTS_IPN_SECRET
 NOWPAYMENTS_INVOICE_URL = settings.NOWPAYMENTS_INVOICE_URL
@@ -96,7 +97,7 @@ def product_list(request):
 
 
 
-
+@csrf_exempt
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def create_crypto_invoice(request):
@@ -153,7 +154,7 @@ def create_crypto_invoice(request):
         "cancel_url": "https://retacuretide.com/checkout/cancel",
         "ipn_callback_url": "https://retacuretide.com/api/payments/crypto/webhook/",
     }
-    print(NOWPAYMENTS_API_KEY)
+    print(NOWPAYMENTS_INVOICE_URL)
     headers = {
         "x-api-key": NOWPAYMENTS_API_KEY,
         "Content-Type": "application/json",
@@ -189,7 +190,7 @@ def verify_nowpayments_signature(request):
 
     return hmac.compare_digest(received, expected)
 
-
+@csrf_exempt
 @api_view(["POST"])
 @permission_classes([])
 def nowpayments_webhook(request):
