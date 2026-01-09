@@ -192,7 +192,7 @@ def verify_nowpayments_signature(request):
 
 @csrf_exempt
 @api_view(["POST"])
-@permission_classes([])
+@permission_classes([permissions.AllowAny])
 def nowpayments_webhook(request):
 
     if not verify_nowpayments_signature(request):
