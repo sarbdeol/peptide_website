@@ -72,6 +72,9 @@ def api_health(request):
             "ts": timezone.now().isoformat(),
         }
     )
+
+def about(request):
+    return render(request, "about.html")
 from django.db.models import Q
 
 def product_list(request):
@@ -195,37 +198,52 @@ def verify_nowpayments_signature(request):
 @permission_classes([permissions.AllowAny])
 def nowpayments_webhook(request):
 
+    # 🔐 Verify NOWPayments signature
     if not verify_nowpayments_signature(request):
         return Response({"error": "Invalid signature"}, status=403)
 
     data = request.data
+
     temp_id = data.get("order_id")
-    status_code = data.get("payment_status")
+    payment_status = data.get("payment_status")
 
-    if status_code not in ("confirmed", "finished"):
-        return Response({"message": "Ignored"}, status=200)
+    # Only accept completed payments
+    if payment_status not in ("confirmed", "finished"):
+        return Response({"message": "Payment not completed"}, status=200)
 
-
+    # Fetch temp cart
     temp = get_object_or_404(TempCart, id=temp_id)
-    info = temp.data
+    info = temp.data  # this is your original checkout payload
 
+    # 💰 Calculate totals safely
+    subtotal = float(info.get("subtotal", 0))
+    shipping = float(info.get("shipping_cost", 0))
+    total = float(info.get("amount_total", subtotal + shipping))
+
+    # ✅ Create Order (ONLY valid fields)
     order = Order.objects.create(
-        name=info["customer"].get("name", ""),
-        email=info["customer"].get("email", ""),
-        phone=info["customer"].get("phone", ""),
-        address=json.dumps(info["address"]),
-        items=info["items"],
-        subtotal=info["subtotal"],
-        shipping_cost=info["shipping_cost"],
-        amount_total=info["amount_total"],
+        items={
+            "cart": info.get("items", []),
+            "customer": info.get("customer", {}),
+            "address": info.get("address", {}),
+            "subtotal": subtotal,
+            "shipping": shipping,
+            "payment_provider": "nowpayments",
+            "nowpayments_payload": data,  # full webhook payload (audit-safe)
+        },
+        amount_total=total,
         paid=True,
         status="Paid",
+        payment_method="crypto",
     )
 
-    order.add_timeline_event("paid", "Crypto payment via NOWPayments")
+    # 🧹 Cleanup temp cart
     temp.delete()
 
-    return Response({"success": True})
+    return Response({
+        "success": True,
+        "order_id": order.id
+    })
 
 
 

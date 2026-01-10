@@ -51,9 +51,10 @@
         </a>
 
         <nav class="nav" aria-label="Primary">
-          <a href="{% url 'home' %}#products">Research Catalog</a>
+          <a href="{% url 'home' %}#products">Catalog</a>
           <a href="{% url 'home' %}#quality">Quality Assurance</a>
           <a href="{% url 'home' %}#faq">Information</a>
+          <a href="{% url 'about' %}">About</a>
           <a href="#contact">Contact</a>
         </nav>
 
@@ -138,13 +139,13 @@
           <div class="footer__title">Customer Service</div>
           <a class="footer__link" href="#">Shipping Information</a>
           <a class="footer__link" href="#">Return Policy</a>
-          <a class="footer__link" href="#">Contact Us</a>
+          <a class="footer__link" href="{% url 'about' %}">Contact Us</a>
           <a class="footer__link" href="#">Track Order</a>
         </div>
 
         <div>
           <div class="footer__title">Information</div>
-          <a class="footer__link" href="#">About Our Lab</a>
+          <a class="footer__link" href="{% url 'about' %}">About Our Lab</a>
           <a class="footer__link" href="#">Terms of Service</a>
           <a class="footer__link" href="#">Privacy Policy</a>
           <a class="footer__link" href="#">Research Guidelines</a>
