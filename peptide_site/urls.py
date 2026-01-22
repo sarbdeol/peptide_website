@@ -16,6 +16,7 @@ urlpatterns = [
     path("api/payments/crypto/webhook/", views.nowpayments_webhook, name="crypto_webhook"),
     path("checkout/success/", views.checkout_success, name="checkout_success"),
     path("checkout/cancel/", views.checkout_cancel, name="checkout_cancel"),
+    path("password/", views.site_password_view, name="site_password"),
 ]
 
 if settings.DEBUG:

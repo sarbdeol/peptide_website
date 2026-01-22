@@ -252,3 +252,18 @@ def checkout_success(request):
 
 def checkout_cancel(request):
     return render(request, "cancel.html")
+
+
+from django.shortcuts import render, redirect
+
+def site_password_view(request):
+    error = None
+
+    if request.method == "POST":
+        if request.POST.get("password") == settings.SITE_ACCESS_PASSWORD:
+            request.session["site_unlocked"] = True
+            return redirect("/")
+        else:
+            error = "Invalid password"
+
+    return render(request, "password.html", {"error": error})

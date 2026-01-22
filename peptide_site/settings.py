@@ -10,6 +10,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 NOWPAYMENTS_API_KEY = os.getenv("NOWPAYMENTS_API_KEY")
 NOWPAYMENTS_IPN_SECRET = os.getenv("NOWPAYMENTS_IPN_SECRET")
 NOWPAYMENTS_INVOICE_URL = "https://api.nowpayments.io/v1/invoice"
+SITE_ACCESS_PASSWORD = os.getenv("SITE_ACCESS_PASSWORD", "researchonly123")
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 # if you need to send cookies/auth headers:
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "store.middleware.SitePasswordMiddleware", 
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
